@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-@(l)7nvi8tn6ybt(4dp__a$qn!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['your-app-name.onrender.com']  # Cambia 'your-app-name' por el nombre de tu app en Render
+ALLOWED_HOSTS = ['*', 'erecuperaciondc-ker7.onrender.com']
 
 # Application definition
 
