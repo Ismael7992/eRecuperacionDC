@@ -1,0 +1,136 @@
+{% extends "./plantilla.html" %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'guardarPiloto' %}" method="post" enctype="multipart/form-data" id="frm_nuevo_piloto">
+                {% csrf_token %}
+                
+                <label for="dni"><b>DNI:</b></label>
+                <input type="text" class="form-control" id="dni" name="dni" placeholder="DNI del piloto" required>
+                <br>
+
+                <label for="primer_apellido"><b>Primer Apellido:</b></label>
+                <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" placeholder="Primer apellido" required>
+                <br>
+
+                <label for="segundo_apellido"><b>Segundo Apellido:</b></label>
+                <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" placeholder="Segundo apellido" required>
+                <br>
+
+                <label for="nombres"><b>Nombres:</b></label>
+                <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres del piloto" required>
+                <br>
+
+                <label for="email"><b>Email:</b></label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email del piloto" required>
+                <br>
+
+                <label for="numero_celular"><b>Número de Celular:</b></label>
+                <input type="text" class="form-control" id="numero_celular" name="numero_celular" placeholder="Número de celular" required>
+                <br>
+
+                <label for="foto_carnet"><b>Foto Carnet:</b></label>
+                <input type="file" name="foto_carnet" id="foto_carnet" accept="image/*" required class="form-control">
+                <br>
+
+                <label for="hoja_vida_pdf"><b>Hoja de Vida (PDF):</b></label>
+                <input type="file" name="hoja_vida_pdf" id="hoja_vida_pdf" accept=".pdf" required class="form-control">
+                <br>
+
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'listadoPilotos' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluye jQuery Validation Plugin -->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $("#frm_nuevo_piloto").validate({
+            rules: {
+                dni: {
+                    required: true,
+                    digits: true
+                },
+                primer_apellido: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                segundo_apellido: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                nombres: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                numero_celular: {
+                    required: true,
+                    digits: true
+                },
+                foto_carnet: {
+                    required: true,
+                    extension: "jpg|jpeg|png"
+                },
+                hoja_vida_pdf: {
+                    required: true,
+                    extension: "pdf"
+                }
+            },
+            messages: {
+                dni: {
+                    required: "Por favor, ingrese el DNI del piloto",
+                    digits: "Ingrese solo números"
+                },
+                primer_apellido: {
+                    required: "Por favor, ingrese el primer apellido",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                segundo_apellido: {
+                    required: "Por favor, ingrese el segundo apellido",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                nombres: {
+                    required: "Por favor, ingrese los nombres",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                email: {
+                    required: "Por favor, ingrese un correo electrónico",
+                    email: "Ingrese un correo electrónico válido"
+                },
+                numero_celular: {
+                    required: "Por favor, ingrese el número de celular",
+                    digits: "Ingrese solo números"
+                },
+                foto_carnet: {
+                    required: "Por favor, seleccione una foto carnet",
+                    extension: "Solo se permiten archivos con extensión .jpg, .jpeg o .png"
+                },
+                hoja_vida_pdf: {
+                    required: "Por favor, seleccione un archivo PDF",
+                    extension: "Solo se permiten archivos con extensión .pdf"
+                }
+            }
+        });
+
+        // Método de validación personalizado para letras y espacios
+        $.validator.addMethod("letterswithspaces", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+        }, "Ingrese solo letras y espacios");
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluye Bootstrap JavaScript (popper.js y bootstrap.min.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+{% extends "./plantilla.html" %}
+
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-title text-center"></div>
+    <h3><b>Lista de Pilotos</b></h3>
+    <br>
+    <div class="text-end">
+        <a href="{% url 'nuevoPiloto' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Agregar Piloto
+        </a>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <table class="table table-bordered table-striped table-hover" id="tbl-pilotos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>PRIMER APELLIDO</th>
+                <th>SEGUNDO APELLIDO</th>
+                <th>NOMBRES</th>
+                <th>E-MAIL</th>
+                <th>NUMERO CELULAR</th>
+                <th>FOTO CARNET</th>
+                <th>HOJA DE VIDA </th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for piloto in pilotos %}
+            <tr>
+                <td>{{ piloto.id }}</td>
+                <td>{{ piloto.dni }}</td>
+                <td>{{ piloto.primer_apellido }}</td>
+                <td>{{ piloto.segundo_apellido }}</td>
+                <td>{{ piloto.nombres }}</td>
+                <td>{{ piloto.email }}</td>
+                <td>{{ piloto.numero_celular }}</td>
+                <td>
+                    {% if piloto.foto_carnet %}
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ piloto.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ...
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ piloto.id }}">
+                                <a class="dropdown-item" href="{{ piloto.foto_carnet.url }}" target="_blank">Ver Foto</a>
+                                <a class="dropdown-item" download href="{{ piloto.foto_carnet.url }}" target="_blank">Descargar Foto</a>
+                            </div>
+                        </div>
+                        <br>
+                        <a download href="{{ piloto.foto_carnet.url }}" target="_blank">
+                            <img src="{{ piloto.foto_carnet.url }}" alt="" height="100px" width="100px">
+                        </a>
+                    {% else %}
+                        <p>No hay foto disponible</p>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if piloto.hoja_vida_pdf %}
+                        <a href="{{ piloto.hoja_vida_pdf.url }}" class="btn btn-info" target="_blank">Ver Hoja de Vida</a>
+                        <a href="{{ piloto.hoja_vida_pdf.url }}" class="btn btn-secondary" download>Descargar Hoja de Vida</a>
+                    {% else %}
+                        <p>No disponible</p>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editarPiloto' piloto.id %}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i>Editar</a>
+                    <br><br>
+                    <a href="{% url 'eliminarPiloto' piloto.id %}" class="btn btn-danger"
+                     onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fa-solid fa-trash"></i>Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    let table = new DataTable('#tbl-pilotos');
+</script>
+<style>
+    .dt-input {
+        border: 3px solid rgb(0, 162, 255);
+    }
+</style>
+{% endblock %}

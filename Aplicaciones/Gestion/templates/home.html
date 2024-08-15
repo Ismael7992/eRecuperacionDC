@@ -1,0 +1,50 @@
+{% extends "./plantilla.html" %}
+{% load static %}
+{% block body %}
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'img/portada.jpg' %}" class="d-block w-100 carousel-img" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/imagen2.jpg' %}" class="d-block w-100 carousel-img" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'img/imagen3.jpg' %}" class="d-block w-100 carousel-img" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <br><br>
+  
+{% endblock %}
+
+<!-- Agrega estilos CSS adicionales -->
+<style>
+  /* Establece un tamaño fijo para el contenedor del carrusel */
+  .carousel-inner {
+    max-height: 400px; /* Ajusta la altura máxima según sea necesario */
+  }
+
+  .carousel-item {
+    height: 100%; /* Ajusta la altura para que el carrusel se ajuste al contenedor */
+  }
+
+  .carousel-img {
+    width: 50%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el área del contenedor sin distorsionarse */
+  }
+</style>

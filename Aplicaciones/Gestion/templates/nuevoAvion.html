@@ -1,0 +1,135 @@
+{% extends "./plantilla.html" %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'guardarAvion' %}" method="post" enctype="multipart/form-data" id="frm_nuevo_avion">
+                {% csrf_token %}
+                
+                <label for="nombre"><b>Nombre:</b></label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del avión" required>
+                <br>
+
+                <label for="marca"><b>Marca:</b></label>
+                <input type="text" class="form-control" id="marca" name="marca" placeholder="Marca del avión" required>
+                <br>
+
+                <label for="numero_matricula"><b>Número de Matrícula:</b></label>
+                <input type="text" class="form-control" id="numero_matricula" name="numero_matricula" placeholder="Número de matrícula" required>
+                <br>
+
+                <label for="capacidad"><b>Capacidad:</b></label>
+                <input type="number" class="form-control" id="capacidad" name="capacidad" placeholder="Capacidad del avión" required>
+                <br>
+
+                <label for="ano_creacion"><b>Año de Creación:</b></label>
+                <input type="number" class="form-control" id="ano_creacion" name="ano_creacion" placeholder="Año de creación" required>
+                <br>
+
+                <label for="fotografia"><b>Fotografía:</b></label>
+                <input type="file" name="fotografia" id="fotografia" accept="image/*" required class="form-control">
+                <br>
+
+                <label for="piloto"><b>Piloto Asignado:</b></label>
+                <select class="form-control" id="piloto" name="piloto">
+                    <option value="" selected disabled>Seleccione un piloto</option>
+                    {% for piloto in pilotos %}
+                        <option value="{{ piloto.id }}">{{ piloto.nombres }} {{ piloto.primer_apellido }} {{ piloto.segundo_apellido }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'listadoAviones' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluye jQuery Validation Plugin -->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $("#frm_nuevo_avion").validate({
+            rules: {
+                nombre: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                marca: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                numero_matricula: {
+                    required: true,
+                    alphanumeric: true
+                },
+                capacidad: {
+                    required: true,
+                    digits: true
+                },
+                ano_creacion: {
+                    required: true,
+                    digits: true,
+                    minlength: 4,
+                    maxlength: 4
+                },
+                fotografia: {
+                    required: true,
+                    extension: "jpg|jpeg|png"
+                },
+                piloto: {
+                    required: true
+                }
+            },
+            messages: {
+                nombre: {
+                    required: "Por favor, ingrese el nombre del avión",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                marca: {
+                    required: "Por favor, ingrese la marca del avión",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                numero_matricula: {
+                    required: "Por favor, ingrese el número de matrícula",
+                    alphanumeric: "Ingrese solo letras y números"
+                },
+                capacidad: {
+                    required: "Por favor, ingrese la capacidad del avión",
+                    digits: "Ingrese solo números"
+                },
+                ano_creacion: {
+                    required: "Por favor, ingrese el año de creación",
+                    digits: "Ingrese solo números",
+                    minlength: "El año debe tener 4 dígitos",
+                    maxlength: "El año debe tener 4 dígitos"
+                },
+                fotografia: {
+                    required: "Por favor, seleccione una fotografía",
+                    extension: "Solo se permiten archivos con extensión .jpg, .jpeg o .png"
+                },
+                piloto: {
+                    required: "Por favor, seleccione un piloto asignado"
+                }
+            }
+        });
+
+        // Métodos de validación personalizados
+        $.validator.addMethod("letterswithspaces", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+        }, "Ingrese solo letras y espacios");
+
+        $.validator.addMethod("alphanumeric", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
+        }, "Ingrese solo letras y números");
+    });
+</script>
+
+{% endblock %}

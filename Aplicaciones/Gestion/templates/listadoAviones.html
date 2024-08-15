@@ -1,0 +1,91 @@
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluye Bootstrap JavaScript (popper.js y bootstrap.min.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+{% extends "./plantilla.html" %}
+
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-title text-center"></div>
+    <h3><b>Lista de Aviones</b></h3>
+    <br>
+    <div class="text-end">
+        <a href="{% url 'nuevoAvion' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Agregar Avión
+        </a>
+        
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <table class="table table-bordered table-striped table-hover" id="tbl-aviones">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>MARCA</th>
+                <th>NÚMERO DE MATRÍCULA</th>
+                <th>CAPACIDAD</th>
+                <th>AÑO DE CREACIÓN</th>
+                <th>FOTOGRAFÍA</th>
+                <th>PILOTO</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for avion in aviones %}
+            <tr>
+                <td>{{ avion.id }}</td>
+                <td>{{ avion.nombre }}</td>
+                <td>{{ avion.marca }}</td>
+                <td>{{ avion.numero_matricula }}</td>
+                <td>{{ avion.capacidad }}</td>
+                <td>{{ avion.ano_creacion }}</td>
+                <td>
+                    {% if avion.fotografia %}
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ avion.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ...
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ avion.id }}">
+                                <a class="dropdown-item" href="{{ avion.fotografia.url }}" target="_blank">Ver Fotografía</a>
+                                <a class="dropdown-item" download href="{{ avion.fotografia.url }}" target="_blank">Descargar Fotografía</a>
+                            </div>
+                        </div>
+                        <br>
+                        <a download href="{{ avion.fotografia.url }}" target="_blank">
+                            <img src="{{ avion.fotografia.url }}" alt="" height="100px" width="100px">
+                        </a>
+                    {% else %}
+                        <p>No hay fotografía disponible</p>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if avion.piloto %}
+                        {{ avion.piloto.nombres }} {{ avion.piloto.primer_apellido }} {{ avion.piloto.segundo_apellido }}
+                    {% else %}
+                        <p>No asignado</p>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editarAvion' avion.id %}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i>Editar</a>
+                    <br><br>
+                    <a href="{% url 'eliminarAvion' avion.id %}" class="btn btn-danger"
+                     onclick="return confirm('¿Estás seguro de eliminar?')"><i class="fa-solid fa-trash"></i>Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    let table = new DataTable('#tbl-aviones');
+</script>
+<style>
+    .dt-input {
+        border: 3px solid rgb(0, 162, 255);
+    }
+</style>
+{% endblock %}

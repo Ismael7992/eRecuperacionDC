@@ -1,0 +1,148 @@
+{% extends "./plantilla.html" %}
+
+{% block body %}
+<h1>Editar Piloto</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="{% url 'actualizarPiloto' %}" method="post" enctype="multipart/form-data" id="frm_editar_piloto">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ pilotoEditar.id }}">
+
+                <div class="form-group">
+                    <label for="dni">DNI:</label>
+                    <input type="text" class="form-control" id="dni" name="dni" placeholder="DNI del piloto" value="{{ pilotoEditar.dni }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="primer_apellido">Primer Apellido:</label>
+                    <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" placeholder="Primer apellido del piloto" value="{{ pilotoEditar.primer_apellido }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="segundo_apellido">Segundo Apellido:</label>
+                    <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" placeholder="Segundo apellido del piloto" value="{{ pilotoEditar.segundo_apellido }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombres">Nombres:</label>
+                    <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres del piloto" value="{{ pilotoEditar.nombres }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email del piloto" value="{{ pilotoEditar.email }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="numero_celular">Número de Celular:</label>
+                    <input type="text" class="form-control" id="numero_celular" name="numero_celular" placeholder="Número de celular" value="{{ pilotoEditar.numero_celular }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="foto_carnet">Foto Carnet:</label>
+                    <input type="file" name="foto_carnet" id="foto_carnet" accept="image/*" class="form-control">
+                </div>
+
+                {% if pilotoEditar.foto_carnet %}
+                    <div class="form-group">
+                        <label>Foto Actual:</label>
+                        <div>
+                            <img src="{{ pilotoEditar.foto_carnet.url }}" alt="Foto Carnet" height="100px" width="100px">
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="hoja_vida_pdf">Hoja de Vida (PDF):</label>
+                    <input type="file" name="hoja_vida_pdf" id="hoja_vida_pdf" accept="application/pdf" class="form-control">
+                </div>
+
+                {% if pilotoEditar.hoja_vida_pdf %}
+                    <div class="form-group">
+                        <label>Hoja de Vida Actual:</label>
+                        <div>
+                            <a href="{{ pilotoEditar.hoja_vida_pdf.url }}" target="_blank">Ver Hoja de Vida</a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"> <i class="fas fa-refresh"></i> Actualizar</button>
+                    <a href="{% url 'listadoPilotos' %}" class="btn btn-dark"><i class="fa-solid fa-ban"></i>Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluye jQuery Validation Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $("#frm_editar_piloto").validate({
+            rules: {
+                dni: {
+                    required: true,
+                    digits: true
+                },
+                primer_apellido: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                segundo_apellido: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                nombres: {
+                    required: true,
+                    letterswithspaces: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                numero_celular: {
+                    required: true,
+                    digits: true
+                }
+            },
+            messages: {
+                dni: {
+                    required: "Por favor, ingrese el DNI del piloto",
+                    digits: "Ingrese solo dígitos"
+                },
+                primer_apellido: {
+                    required: "Por favor, ingrese el primer apellido",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                segundo_apellido: {
+                    required: "Por favor, ingrese el segundo apellido",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                nombres: {
+                    required: "Por favor, ingrese los nombres",
+                    letterswithspaces: "Ingrese solo letras y espacios"
+                },
+                email: {
+                    required: "Por favor, ingrese un correo electrónico",
+                    email: "Ingrese un correo electrónico válido"
+                },
+                numero_celular: {
+                    required: "Por favor, ingrese el número de celular",
+                    digits: "Ingrese solo dígitos"
+                }
+            }
+        });
+
+        $.validator.addMethod("letterswithspaces", function(value, element) {
+            return this.optional(element) || /^[a-zA-Z\s]*$/.test(value);
+        }, "Ingrese solo letras y espacios");
+    });
+</script>
+
+{% endblock %}
