@@ -14,10 +14,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-@(l)7nvi8tn6ybt(4dp__a$qn!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*', 'erecuperaciondc-ker7.onrender.com']
+# Replace '*' with your domain in production
+ALLOWED_HOSTS = ['erecuperaciondc-ker7.onrender.com']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -61,7 +61,6 @@ WSGI_APPLICATION = 'eRecuperacionDC.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -69,14 +68,13 @@ DATABASES = {
     }
 }
 
-# Agrega soporte para Render's PostgreSQL si decides cambiar de base de datos en el futuro
+# Descomentar y configurar la cadena de conexión si usas PostgreSQL en el futuro
 # DATABASES = {
-#     'default': dj_database_url.config(default='sqlite:///bddgestion.db', conn_max_age=600)
+#     'default': dj_database_url.config(default='postgres://USER:PASSWORD@HOST:PORT/NAME', conn_max_age=600)
 # }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -94,18 +92,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Añadido para producción
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'eRecuperacionDC/static')]
@@ -119,5 +112,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'eRecuperacionDC/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
